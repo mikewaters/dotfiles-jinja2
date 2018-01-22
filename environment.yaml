@@ -1,1 +1,5 @@
-gitmail: mike@mikewaters.net
+git:
+    mail: mike@mikewaters.net
+pypi:
+    username: Robert.Waters
+    password: nope

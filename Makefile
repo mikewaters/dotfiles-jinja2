@@ -1,7 +1,7 @@
 .PHONY: macbook check uninstall install compile init clean
 
 macbook: init
-	stow test
+	stow git
 
 VENV := ./.virtualenv
 
@@ -16,8 +16,9 @@ ifeq ($(shell which python3),)
 else
 	@pyvenv $(VENV)
 endif
-	@source $(VENV)/bin/activate && pip install yasha
+	@source $(VENV)/bin/activate && pip install yasha yamlreader
 	@source $(VENV)/bin/activate && which yasha
+	@source $(VENV)/bin/activate && which yamlreader
 
 # Remove virtualenv, which will essentially uninstall the python dependencies
 uninstall:
@@ -27,13 +28,18 @@ TEMPLATES = $(shell find . -name "*.j2" -not -path "$(VENV)/*")
 RENDERED = $(shell find . -name "*.j2" -not -path "$(VENV)/*" |sed 's/.j2//')
 KERNEL = $(shell uname -s)
 
+# Merge template config files (secret and non); note that the yamlreader merge will
+# use whichever file specified last in the cli as the winner of duplicates.
 # Render all of the jinja templates in the project, excepting for the virtualenv created to
 # store our dependencies
 compile:
+	$(eval VARFILE = $(shell mktemp -t XXXXXX.yaml))
+	@source $(VENV)/bin/activate && yamlreader environment.yaml secrets.yaml > $(VARFILE) 
 	@$(foreach f, ${TEMPLATES}, \
 		echo rendering $f; \
-		source $(VENV)/bin/activate && yasha -v environment.yaml --kernel=$(KERNEL) $f; \
+		source $(VENV)/bin/activate && yasha -v $(VARFILE) --kernel=$(KERNEL) $f; \
 	)
+	@rm -f $(VARFILE)
 
 # CAUTION: this is destructive, it is for development only.
 # This will result in broken symlinks if you did not uninstall the package first
@@ -59,9 +65,10 @@ list:
 # .stowrc into pardir of the location of this projecat
 # TODO: add ignore for yaml, in case I want to add variables for stowrc templating
 init: compile
+	@echo bootstrapping stow
 	@stow -t ${HOME} --ignore ".*.j2" stow
 
 # deinitialize; this will j ust remove our stow configurations, it will not unlink any projects
 # or delete any rendered templates
 deinit:
-	@stow -D stow
+	stow -D stow

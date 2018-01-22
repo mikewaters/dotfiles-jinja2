@@ -1,6 +1,7 @@
 [user]
 	name = Mike Waters
 	email = mike@mikewaters.net
+    xxx = Robert.Waters
 [core]
 	autocrlf = input
 	editor = vim
