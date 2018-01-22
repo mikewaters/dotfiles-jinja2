@@ -1,2 +1,2 @@
-# moustache templates
-.*.ms
+# jinja2 templates
+.*.j2

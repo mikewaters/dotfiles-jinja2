@@ -1,0 +1,4 @@
+.virtualenv
+test
+
+stow/.stowrc
