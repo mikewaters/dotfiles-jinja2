@@ -18,6 +18,9 @@ This prevents rendered fies from getting committed into source control, and also
 allows rendered files to be cleaned up by a script. This will be added to the project's 
 build process.
 
+The data for variants is driven by Jinja's capabilities; by default, we pass into the template layer
+the current kernel (uname -s) as well as any data defined in `environment.yaml`.
+
 ## Dependencies
 gnu stow
 python2 or 3
@@ -50,3 +53,6 @@ Alternatively, make targets can be used.
 ## Remove our stow customizations
 
 `stow -D stow`
+
+## Issues
+We skip j2 and yaml files, they will not be stowed.  if this is an issue it can be worked aroun

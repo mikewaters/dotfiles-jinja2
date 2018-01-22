@@ -1,0 +1,67 @@
+## Terminal config
+HISTSIZE=100000
+HISTFILESIZE=409600
+HISTIGNORE="cd:ls:[bf]g:clear:exit:gp:gs:ll"
+HISTCONTROL=erasedups:ignorespace
+shopt -s histappend
+shopt -s checkwinsize
+
+## Base install userland options
+{% if (kernel == "Darwin") -%}
+export LS_OPTS='-G'  # osx/non-gnu
+{% elif (kernel == "Linux") -%}
+export LS_OPTS='--color=auto'  # linux/gnu
+{% endif %}
+
+export LESS="--RAW-CONTROL-CHARS"
+[[ -f ~/.LESS_TERMCAP ]] && . ~/.LESS_TERMCAP
+
+export GREP_OPTIONS="--color=auto"
+
+## Bashisms
+[[ -f "${HOME}/.bash_aliases" ]] && source ${HOME}/.bash_aliases
+
+{% if (kernel == "Darwin") -%}
+username=$(dscl . -list /Users UniqueID |grep $EUID |awk '{print $1}')
+{% elif (kernel == "Linux") -%}
+username=$(whoami)
+{% endif %}
+[[ -f "${HOME}/.bashrc.$username" ]] && source "${HOME}/.bashrc.$username"
+
+[[ -d ${HOME}/.bash_completion.d ]] && for f in ${HOME}/.bash_completion.d/*; do source $f; done
+
+## Addon software config
+# tmux
+[ -n "$TMUX" ] && export TERM=screen-256color
+
+# powerline
+function _update_ps1() {
+    #PS1="$(powerline-shell $?)"
+    PS1="$(~/go/bin/powerline-go -error $?)"
+}
+
+if [ "$TERM" != "linux" ]; then
+        PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
+fi
+
+# Env var customizations
+export PATH="/usr/local/bin:${PATH}"
+export PATH="${HOME}/bin:$PATH"
+
+{% if (kernel == "Darwin") -%}
+export PATH=/Library/Developer/CommandLineTools/usr/bin:$PATH
+
+# gnu utils
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+{% endif %}
+
+# virtualenvwrapper (py27)
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+export WORKON_HOME=$HOME/.virtualenvs
+source /usr/local/bin/virtualenvwrapper.sh
+
+# node
+export NODE_PATH=$NODE_PATH:${HOME}/node_modules
+
+

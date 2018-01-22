@@ -25,13 +25,14 @@ uninstall:
 	
 TEMPLATES = $(shell find . -name "*.j2" -not -path "$(VENV)/*")
 RENDERED = $(shell find . -name "*.j2" -not -path "$(VENV)/*" |sed 's/.j2//')
+KERNEL = $(shell uname -s)
 
 # Render all of the jinja templates in the project, excepting for the virtualenv created to
 # store our dependencies
 compile:
 	@$(foreach f, ${TEMPLATES}, \
 		echo rendering $f; \
-		source $(VENV)/bin/activate && yasha $f; \
+		source $(VENV)/bin/activate && yasha -v environment.yaml --kernel=$(KERNEL) $f; \
 	)
 
 # CAUTION: this is destructive, it is for development only.
@@ -43,6 +44,12 @@ clean:
 		git clean -fX $f; \
 	)
 
+# List the templates in this project
+list:
+	@$(foreach f, ${TEMPLATES}, \
+		echo $f; \
+	)
+
 # Initialize the project by using stow to bootstrap itself.
 # The expectation is that a bare/unconfigured version of stow will be installed;
 # if a configured version of stow *is* installed, we will overwrite its config files.
@@ -50,6 +57,7 @@ clean:
 # the `--target` parameter in .stowrc with the user's home directory, .stowrc has
 # not yet been symlinked to $HOME and therefore stow will, by default, symlink 
 # .stowrc into pardir of the location of this projecat
+# TODO: add ignore for yaml, in case I want to add variables for stowrc templating
 init: compile
 	@stow -t ${HOME} --ignore ".*.j2" stow
 
