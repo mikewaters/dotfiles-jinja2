@@ -1,5 +1,2 @@
 # jinja2 templates
 .*.j2
-# various files
-README.md
-environment.yaml
