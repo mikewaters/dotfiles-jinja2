@@ -1,0 +1,14 @@
+{
+  "segments": [
+    "virtual_env", 
+    "username", 
+    "hostname", 
+    "ssh", 
+    "cwd", 
+    "git", 
+    "jobs", 
+    "root",
+    "aws_profile"
+  ],
+  "theme": "mike"
+}
