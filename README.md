@@ -73,7 +73,7 @@ Make sure you don't stow these files until you are ready; if you stow something,
 your package, for instance removing a file, un-stowing will NOT remove that file's symlink, as stow
 doesnt know anything about it anymore.
 
-For information on using Jinja filters and extensions, see the documentation for `yasha`, which is
+For information on using Jinja filters and extensions, see the documentation for `yasha` (https://github.com/kblomqvist/yasha), which is
 the Jinja2 cli wrapper that this project uses to render templates.
 
 ## Issues
