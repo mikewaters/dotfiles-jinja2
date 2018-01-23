@@ -10,6 +10,10 @@ This project follows that model, with the addition of allowing the user to templ
 these files using `Jinja2`, in order to achieve dotfile sharing between operating
 system variants (linux, bsd, osx).
 
+The downside of this approach is that you need to manually merge changes between 
+in-use versions of templated dotfiles (that have been rendered, and then updated through
+regular use).  In my opinion, the overall convenience outweighs this downside.
+
 ## How it works
 ### Templates
 Template files use the Jinja2 format, and should have the `.j2` extension appended to 
