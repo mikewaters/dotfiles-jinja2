@@ -5,5 +5,6 @@ test
 .stowrc
 shell/.bash_profile
 shell/.bashrc
-git/.config./git/ignore
-git/.config./git/config
+git/.config/git/ignore
+git/.config/git/config
+python/.pypirc

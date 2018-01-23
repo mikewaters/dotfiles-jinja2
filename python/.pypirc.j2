@@ -1,9 +1,13 @@
 [distutils]
 index-servers =
-        pypi
+        {% for server in pypi_index_servers -%}
+        {{ server['name'] }}
+        {%- endfor %}
 
-[pypi]
-repository = https://pypi.python.org/pypi
-username = {{ pypi['username'] }}
-password = {{ pypi['password'] }}
+{% for server in pypi_index_servers -%}
+[{{ server['name'] }}]
+repository = {{ server['repository'] }}
+username = {{ server['username'] }}
+password = {{ server['password'] }}
+{% endfor %}
 
