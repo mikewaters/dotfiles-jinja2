@@ -1,6 +1,6 @@
 .PHONY: macbook check uninstall install compile init clean
 
-macbook: init
+macbook: compile
 	stow git
 
 VENV := ./.virtualenv
@@ -10,7 +10,7 @@ check:
 	@which stow
 
 # Create a virtualenv into which we will install python dependencies
-install: uninstall check
+install: check
 ifeq ($(shell which python3),)
 	@virtualenv $(VENV)
 else
@@ -56,19 +56,3 @@ list:
 		echo $f; \
 	)
 
-# Initialize the project by using stow to bootstrap itself.
-# The expectation is that a bare/unconfigured version of stow will be installed;
-# if a configured version of stow *is* installed, we will overwrite its config files.
-# Note: we pass -t param to stow here because, while the template render process populates
-# the `--target` parameter in .stowrc with the user's home directory, .stowrc has
-# not yet been symlinked to $HOME and therefore stow will, by default, symlink 
-# .stowrc into pardir of the location of this projecat
-# TODO: add ignore for yaml, in case I want to add variables for stowrc templating
-init: compile
-	@echo bootstrapping stow
-	@stow -t ${HOME} --ignore ".*.j2" stow
-
-# deinitialize; this will j ust remove our stow configurations, it will not unlink any projects
-# or delete any rendered templates
-deinit:
-	stow -D stow

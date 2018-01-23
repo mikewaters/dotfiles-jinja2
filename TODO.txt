@@ -1,1 +1,3 @@
 - push variables into template generation process, instead of using shell to derive them.  this way, the render process can be mocked for testing.
+- use a pipfile/requiremetns file
+- add files to gitignore in a build process
