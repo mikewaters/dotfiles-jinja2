@@ -66,14 +66,15 @@ Alternatively, make targets can be used to group stow projects.
 
 ## Development
 For any file that requires a variant, the file is templated using `Jinja2` and the
-`.j2` extension is added to it.  At the same time, a .gitignore rule is added for the
-rendered file's name (ex: bash/.bashrc.j2 would require bash/.bashrc in ignore list).
-This prevents rendered fies from being accidentally committed into source control, and also 
-allows rendered files to be cleaned up by a script. [This will be added to the project's 
-build process.]
+`.j2` extension is added to it.  Running `make build` will drop a .gitignore into each
+stow package to prevent rendered files from being accidentally committed into source control. 
+Running `make compile` will render all templates, allowing yo uto see if your template is working.
+Make sure you don't stow these files until you are ready; if you stow something, and then modify
+your package, for instance removing a file, un-stowing will NOT remove that file's symlink, as stow
+doesnt know anything about it anymore.
 
 For information on using Jinja filters and extensions, see the documentation for `yasha`, which is
 the Jinja2 cli wrapper that this project uses to render templates.
 
 ## Issues
-We skip j2 and yaml files, they will not be stowed.  if this is an issue it can be worked aroun
+If you have a .j2 file that needs to be stowed, this will not work for you ;)

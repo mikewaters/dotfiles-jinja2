@@ -27,6 +27,7 @@ endif
 uninstall:
 	rm -rf $(VENV)
 	
+PACKAGES = $(shell find . -maxdepth 1 -type d -not -path "$(VENV)" -not -name .git -not -name .)
 TEMPLATES = $(shell find . -name "*.j2" -not -path "$(VENV)/*")
 RENDERED = $(shell find . -name "*.j2" -not -path "$(VENV)/*" |sed 's/.j2//')
 KERNEL = $(shell uname -s)
@@ -59,4 +60,13 @@ clean:
 	@$(foreach f, ${RENDERED}, \
 		git clean -fX $f; \
 	)
+
+# generate the project-specific gitignores
+build:
+	@$(foreach d, ${PACKAGES}, \
+		pushd $d >/dev/null; \
+		find . -name '*.j2' -print | sed -e 's|^\./||' -e 's/.j2//' > .gitignore; \
+		popd >/dev/null; \
+	)
+
 
