@@ -2,7 +2,7 @@
 secrets.yaml
 test
 
-stow/.stowrc
+.stowrc
 shell/.bash_profile
 shell/.bashrc
 git/.config./git/ignore
