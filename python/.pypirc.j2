@@ -1,11 +1,11 @@
 [distutils]
 index-servers =
-        {% for server in pypi_index_servers -%}
-        {{ server['name'] }}
+        {% for name, server in pypi_index_servers.items() -%}
+        {{ name }}
         {%- endfor %}
 
-{% for server in pypi_index_servers -%}
-[{{ server['name'] }}]
+{% for name, server in pypi_index_servers.items() -%}
+[{{ name }}]
 repository = {{ server['repository'] }}
 username = {{ server['username'] }}
 password = {{ server['password'] }}

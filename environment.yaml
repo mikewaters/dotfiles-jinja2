@@ -1,7 +1,7 @@
 git:
     mail: mike@mikewaters.net
 pypi_index_servers:
-    - name: pypi
+    pypi:
       repository: https://pypi.python.org/pypi
       username: Robert.Waters
       password: nope
